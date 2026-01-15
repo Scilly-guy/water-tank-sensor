@@ -61,11 +61,8 @@ class PrometheusHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/metrics":
             distance = average_distance(20)
-            depth= 294-distance
-            volume= depth*10
             response = (
                 f"water_level_cm {distance}\n"
-                f"guess_water_volume_l {volume}\n"
             )
             self.send_response(200)
             self.send_header("Content-Type", "text/plain; version=0.0.4")
