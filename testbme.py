@@ -1,17 +1,15 @@
-import bme280
-import smbus2
-from time import sleep
+import board
+import adafruit_bme280 as bme280
+import time
 
-port = 1
-address = 0x77
-bus = smbus2.SMBus(port)
+i2c = board.I2C()  # uses /dev/i2c-1
+bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c)
 
-bme280.load_calibration_params(bus,address)
+bme280.sea_level_pressure = 1013.25  # adjust for your location
 
 while True:
-    bme280_data = bme280.sample(bus,address)
-    humidity  = bme280_data.humidity
-    pressure  = bme280_data.pressure
-    ambient_temperature = bme280_data.temperature
-    print(humidity, pressure, ambient_temperature)
-    sleep(1)
+    print(f"Temp: {bme280.temperature:.1f} °C")
+    print(f"Humidity: {bme280.humidity:.1f} %")
+    print(f"Pressure: {bme280.pressure:.1f} hPa")
+    print("-" * 20)
+    time.sleep(2)
