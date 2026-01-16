@@ -1,15 +1,12 @@
-import board
-import adafruit_bme280 as bme280
-import time
+from Adafruit_BME280 import *
 
-i2c = board.I2C()  # uses /dev/i2c-1
-bme280 = bme280.Adafruit_BME280_I2C(i2c)
+sensor = BME280(t_mode=BME280_OSAMPLE_8, p_mode=BME280_OSAMPLE_8, h_mode=BME280_OSAMPLE_8)
 
-bme280.sea_level_pressure = 1013.25  # adjust for your location
+degrees = sensor.read_temperature()
+pascals = sensor.read_pressure()
+hectopascals = pascals / 100
+humidity = sensor.read_humidity()
 
-while True:
-    print(f"Temp: {bme280.temperature:.1f} °C")
-    print(f"Humidity: {bme280.humidity:.1f} %")
-    print(f"Pressure: {bme280.pressure:.1f} hPa")
-    print("-" * 20)
-    time.sleep(2)
+print 'Temp      = {0:0.3f} deg C'.format(degrees)
+print 'Pressure  = {0:0.2f} hPa'.format(hectopascals)
+print 'Humidity  = {0:0.2f} %'.format(humidity)
