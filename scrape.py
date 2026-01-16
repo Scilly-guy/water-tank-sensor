@@ -8,7 +8,7 @@ from bme280 import BME280
 
 TRIG = 15
 ECHO = 14
-PORT = 9092
+PORT = 9091
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(TRIG, GPIO.OUT)
@@ -66,7 +66,7 @@ class PrometheusHandler(BaseHTTPRequestHandler):
             distance = average_distance(20)
             temp, pressure, humidity = sensor.read()
             response = (
-                f"water_level_cm {distance}\n"
+                f"water_level_cm {distance:.3f}\n"
                 f"temperature_celsius {temp:.2f}\n"
                 f"pressure_hpa {pressure:.2f}\n"
                 f"humidity_percent {humidity:.2f}\n"
