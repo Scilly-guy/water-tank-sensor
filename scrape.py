@@ -8,7 +8,7 @@ from bme280 import BME280
 
 TRIG = 15
 ECHO = 14
-PORT = 9091
+PORT = 9092
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(TRIG, GPIO.OUT)
