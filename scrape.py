@@ -4,6 +4,7 @@
 import RPi.GPIO as GPIO
 import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from bme280 import BME280
 
 TRIG = 15
 ECHO = 14
@@ -12,6 +13,8 @@ PORT = 9091
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(TRIG, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)
+
+sensor = BME280()
 
 
 def measure_distance():
@@ -61,8 +64,12 @@ class PrometheusHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/metrics":
             distance = average_distance(20)
+            temp, pressure, humidity = sensor.read()
             response = (
                 f"water_level_cm {distance}\n"
+                f"temperature_celsius {temp:.2f}\n"
+                f"pressure_hpa {pressure:.2f}\n"
+                f"humidity_percent {humidity:.2f}\n"
             )
             self.send_response(200)
             self.send_header("Content-Type", "text/plain; version=0.0.4")
